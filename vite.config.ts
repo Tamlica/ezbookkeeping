@@ -15,6 +15,13 @@ const SRC_DIR = resolve(__dirname, './src');
 const PUBLIC_DIR = resolve(__dirname, './public');
 const BUILD_DIR = resolve(__dirname, './dist',);
 
+let commitHash = 'unknown';
+try {
+    commitHash = git.short();
+} catch (err) {
+    console.warn('git-rev-sync failed, .git folder not found. Using default commit hash.');
+}
+
 export default defineConfig(() => {
     const licenseContent = fs.readFileSync('./LICENSE', { encoding: 'utf-8' });
     const buildUnixTime = process.env['buildUnixTime'] || '';
@@ -27,7 +34,7 @@ export default defineConfig(() => {
             __EZBOOKKEEPING_IS_PRODUCTION__: process.env['NODE_ENV'] === 'production',
             __EZBOOKKEEPING_VERSION__: JSON.stringify(packageFile.version),
             __EZBOOKKEEPING_BUILD_UNIX_TIME__: JSON.stringify(buildUnixTime),
-            __EZBOOKKEEPING_BUILD_COMMIT_HASH__: JSON.stringify(git.short()),
+            __EZBOOKKEEPING_BUILD_COMMIT_HASH__: JSON.stringify(commitHash),
             __EZBOOKKEEPING_LICENSE__: JSON.stringify(licenseContent),
             __EZBOOKKEEPING_THIRD_PARTY_LICENSES__: JSON.stringify(thirdPartyLicenseFile)
         },
