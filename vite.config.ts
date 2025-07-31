@@ -19,7 +19,7 @@ let commitHash = 'unknown';
 try {
     commitHash = git.short();
 } catch (err) {
-    console.warn('git-rev-sync failed, .git folder not found. Using default commit hash.');
+    console.warn('git-rev-sync failed:', err);
 }
 
 export default defineConfig(() => {
